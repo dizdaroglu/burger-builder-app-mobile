@@ -29,7 +29,7 @@ const buildControls = (props) => (
             }
         </View>
         <View style={styles.order}>
-            <TouchableOpacity style={styles.orderButton}>
+            <TouchableOpacity style={styles.orderButton} onPress={() => props.open()}>
                 <Text style={styles.orderButtonText}>ORDER NOW</Text>
             </TouchableOpacity>
         </View>

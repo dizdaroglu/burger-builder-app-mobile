@@ -5,7 +5,12 @@ export default class BurgerIngredient extends Component {
 
 
     render() {
+
         let ingredient = null;
+
+        const hgStyles = {
+            height: this.props.hg
+        }
 
         switch (this.props.type) {
             case ('bread-bottom'):

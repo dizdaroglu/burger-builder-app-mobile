@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Logo from '../components/Logo/Logo';
 import Burger from '../components/Burger/Burger';
 import BuildControls from '../components/Burger/BuildControls/BuildControls';
-
-
+import MyModal from '../components/UI/Modal/MyModal';
+import OrderSummary from '../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -31,6 +31,8 @@ class HomeScreen extends Component {
             meat: 0
         },
         totalPrice: 0,
+        purchasing: false
+
     }
     addIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
@@ -65,6 +67,12 @@ class HomeScreen extends Component {
             totalPrice: newPrice
         })
     }
+    toggleModal = () => {
+        this.setState({
+            purchasing: !this.state.purchasing
+        })
+    }
+
     render() {
         const disabledInfo = {
             ...this.state.ingredients
@@ -74,6 +82,14 @@ class HomeScreen extends Component {
         }
         return (
             <View style={{ flex: 1 }}>
+                <MyModal show={this.state.purchasing}>
+                    <OrderSummary
+                        close={this.toggleModal}
+                        price={this.state.totalPrice}
+                        ingredient={this.state.ingredients}
+                    />
+                </MyModal>
+
                 <View style={styles.up}>
                     <Burger ingredient={this.state.ingredients} />
                 </View>
@@ -83,6 +99,7 @@ class HomeScreen extends Component {
                         ingredientRemoved={this.removeIngredientHandler}
                         price={this.state.totalPrice}
                         disabled={disabledInfo}
+                        open={this.toggleModal}
                     />
                 </View>
             </View>

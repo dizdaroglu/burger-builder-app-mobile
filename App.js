@@ -3,6 +3,7 @@ import { View, Text, Image, SafeAreaView } from 'react-native';
 import { createAppContainer, DrawerItems, createDrawerNavigator, createStackNavigator } from 'react-navigation'
 import HomeScreen from './src/screens/HomeScreen';
 import CheckoutScreen from './src/screens/CheckoutScreen';
+import SplashScreen from './src/screens/SplashScreen';
 import CustomDrawer from './src/components/Drawer/CustomDrawer'
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeIcon from './src/components/Drawer/HomeIcon';
@@ -39,7 +40,12 @@ const HomeStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerLeft: <CustomDrawer navigation={navigation} />
     })
+  },
+  Splash: {
+    screen: SplashScreen
   }
+}, {
+  initialRouteName: 'Home'
 })
 const CheckoutStack = createStackNavigator({
   Check: {
