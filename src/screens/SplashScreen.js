@@ -22,7 +22,7 @@ export default class SplashScreen extends Component {
                 easing: Easing.linear
             }),
             Animated.timing(this.state.animationOpacity, {
-                duration: 1000,
+                duration: 1600,
                 toValue: 1
             })
         ]).start(() => {

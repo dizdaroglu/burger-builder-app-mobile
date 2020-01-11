@@ -72,6 +72,10 @@ class HomeScreen extends Component {
             purchasing: !this.state.purchasing
         })
     }
+    continueHandler = () => {
+        this.toggleModal();
+        this.props.navigation.navigate('Summary')
+    }
 
     render() {
         const disabledInfo = {
@@ -84,6 +88,7 @@ class HomeScreen extends Component {
             <View style={{ flex: 1 }}>
                 <MyModal show={this.state.purchasing}>
                     <OrderSummary
+                        continue={this.continueHandler}
                         close={this.toggleModal}
                         price={this.state.totalPrice}
                         ingredient={this.state.ingredients}

@@ -39,7 +39,7 @@ export default class OrderSummary extends Component {
                     <TouchableOpacity onPress={() => this.props.close()} style={styles.cancel}>
                         <Text style={styles.cancelBtn}>CANCEL</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.close()} style={styles.continue}>
+                    <TouchableOpacity onPress={() => this.props.continue()} style={styles.continue}>
                         <Text style={styles.continueBtn}>CONTINUE</Text>
                     </TouchableOpacity>
                 </View>
