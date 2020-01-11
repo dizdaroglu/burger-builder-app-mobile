@@ -21,13 +21,16 @@ export default class CheckoutSummary extends Component {
         },
     }
     render() {
+        const { params } = this.props.navigation.state;
+        const ingredients = params ? params.ingredient.ingredients : null;
+        // console.log(ingredients)
         return (
             <View style={styles.container}>
                 <View>
                     <Text style={styles.upText}>We hope it tastes well!</Text>
                 </View>
                 <View style={styles.burger}>
-                    <Burger ingredient={this.state.ingredients} />
+                    <Burger ingredient={ingredients} />
                 </View>
                 <View style={styles.button}>
                     <TouchableOpacity style={styles.cancel}>

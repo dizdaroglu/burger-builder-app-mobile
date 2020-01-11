@@ -6,6 +6,10 @@ import Burger from '../components/Burger/Burger';
 import BuildControls from '../components/Burger/BuildControls/BuildControls';
 import MyModal from '../components/UI/Modal/MyModal';
 import OrderSummary from '../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-orders';
+import Spinner from '../components/Spinner/Spinner';
+import Au from '../components/UI/Au/Au';
+
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -24,15 +28,21 @@ class HomeScreen extends Component {
     }
 
     state = {
-        ingredients: {
-            salad: 0,
-            tomato: 0,
-            cheese: 0,
-            meat: 0
-        },
+        ingredients: null,
         totalPrice: 0,
-        purchasing: false
+        purchasing: false,
+        error: false,
+        loading: false
 
+    }
+    componentDidMount() {
+        axios.get('https://react-my-burger-mobile.firebaseio.com/ingredients.json')
+            .then(response => {
+                this.setState({ ingredients: response.data })
+            })
+            .catch(error => {
+                this.setState({ error: true })
+            })
     }
     addIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
@@ -74,7 +84,7 @@ class HomeScreen extends Component {
     }
     continueHandler = () => {
         this.toggleModal();
-        this.props.navigation.navigate('Summary')
+        this.props.navigation.navigate('Summary', { ingredient: this.state })
     }
 
     render() {
@@ -84,6 +94,26 @@ class HomeScreen extends Component {
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0
         }
+        let burger = this.state.error ? <Text>hata</Text> : <Spinner />;
+        if (this.state.ingredients) {
+            burger = (
+                <Au>
+                    <View style={styles.up}>
+                        <Burger ingredient={this.state.ingredients} />
+                    </View>
+                    <View style={styles.down}>
+                        <BuildControls
+                            ingredientAdded={this.addIngredientHandler}
+                            ingredientRemoved={this.removeIngredientHandler}
+                            price={this.state.totalPrice}
+                            disabled={disabledInfo}
+                            open={this.toggleModal}
+                        />
+                    </View>
+                </Au>
+            )
+        }
+
         return (
             <View style={{ flex: 1 }}>
                 <MyModal show={this.state.purchasing}>
@@ -94,19 +124,7 @@ class HomeScreen extends Component {
                         ingredient={this.state.ingredients}
                     />
                 </MyModal>
-
-                <View style={styles.up}>
-                    <Burger ingredient={this.state.ingredients} />
-                </View>
-                <View style={styles.down}>
-                    <BuildControls
-                        ingredientAdded={this.addIngredientHandler}
-                        ingredientRemoved={this.removeIngredientHandler}
-                        price={this.state.totalPrice}
-                        disabled={disabledInfo}
-                        open={this.toggleModal}
-                    />
-                </View>
+                {burger}
             </View>
         );
     }
