@@ -78,7 +78,7 @@ const Drawer = createDrawerNavigator({
   Checkout: {
     screen: CheckoutStack,
     navigationOptions: {
-      drawerLabel: 'Checkout',
+      drawerLabel: 'Orders',
       drawerIcon: () => (
         <CheckoutIcon />
       )
