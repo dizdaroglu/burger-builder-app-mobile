@@ -20,6 +20,13 @@ export default class CheckoutSummary extends Component {
             meat: 1
         },
     }
+    onContinueHandler = () => {
+        const { params } = this.props.navigation.state;
+        const ingredients = params ? params.ingredient : null;
+        this.props.navigation.navigate('Contact', {
+            ingredient: ingredients
+        })
+    }
     render() {
         const { params } = this.props.navigation.state;
         const ingredients = params ? params.ingredient.ingredients : null;
@@ -36,7 +43,7 @@ export default class CheckoutSummary extends Component {
                     <TouchableOpacity style={styles.cancel}>
                         <Text style={styles.cancelBtn}>CANCEL</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.continue}>
+                    <TouchableOpacity onPress={() => this.onContinueHandler()} style={styles.continue}>
                         <Text style={styles.continueBtn}>CONTINUE</Text>
                     </TouchableOpacity>
                 </View>

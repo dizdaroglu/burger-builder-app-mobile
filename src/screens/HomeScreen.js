@@ -44,6 +44,7 @@ class HomeScreen extends Component {
                 this.setState({ error: true })
             })
     }
+
     addIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
         const updatedCount = oldCount + 1;

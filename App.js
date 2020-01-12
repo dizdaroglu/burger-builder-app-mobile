@@ -3,10 +3,10 @@ import { View, Text, Image, SafeAreaView } from 'react-native';
 import { createAppContainer, DrawerItems, createDrawerNavigator, createStackNavigator } from 'react-navigation'
 import HomeScreen from './src/screens/HomeScreen';
 import CheckoutSummary from './src/screens/CheckoutSummary';
+import ContactDataScreen from './src/screens/ContactDataScreen';
 import CheckoutScreen from './src/screens/CheckoutScreen';
 import SplashScreen from './src/screens/SplashScreen';
-import CustomDrawer from './src/components/Drawer/CustomDrawer'
-import Icon from 'react-native-vector-icons/Ionicons';
+import CustomDrawer from './src/components/Drawer/CustomDrawer';
 import HomeIcon from './src/components/Drawer/HomeIcon';
 import CheckoutIcon from './src/components/Drawer/CheckoutIcon';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -48,6 +48,9 @@ const HomeStack = createStackNavigator({
   },
   Summary: {
     screen: CheckoutSummary
+  },
+  Contact: {
+    screen: ContactDataScreen
   }
 }, {
   initialRouteName: 'Home'
