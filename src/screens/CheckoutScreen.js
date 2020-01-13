@@ -34,6 +34,7 @@ export default class CheckoutScreen extends Component {
                 this.setState({ loading: false })
             })
     }
+
     render() {
 
         let card = (

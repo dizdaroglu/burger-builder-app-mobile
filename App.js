@@ -53,7 +53,7 @@ const HomeStack = createStackNavigator({
     screen: ContactDataScreen
   }
 }, {
-  initialRouteName: 'Home'
+  initialRouteName: 'Splash'
 })
 const CheckoutStack = createStackNavigator({
   Check: {
