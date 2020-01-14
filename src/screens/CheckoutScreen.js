@@ -3,8 +3,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import Logo from '../components/Logo/Logo';
 import axios from '../../axios-orders';
 import Spinner from '../components/Spinner/Spinner';
+import { withNavigationFocus } from 'react-navigation';
 
-export default class CheckoutScreen extends Component {
+class CheckoutScreen extends Component {
 
     static navigationOptions = {
         headerStyle: {
@@ -17,7 +18,28 @@ export default class CheckoutScreen extends Component {
         orders: [],
         loading: true
     }
-    componentWillMount() {
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.isFocused !== this.props.isFocused) {
+            axios.get('orders.json')
+                .then(response => {
+                    const fetchedOrders = [];
+                    for (let key in response.data) {
+                        fetchedOrders.push({
+                            ...response.data[key],
+                            id: key
+                        })
+                    }
+                    this.setState({ loading: false, orders: fetchedOrders })
+                })
+                .catch(error => {
+                    console.log('error');
+                    this.setState({ loading: false })
+                })
+        }
+    }
+
+    componentDidMount() {
         axios.get('orders.json')
             .then(response => {
                 const fetchedOrders = [];
@@ -36,7 +58,6 @@ export default class CheckoutScreen extends Component {
     }
 
     render() {
-
         let card = (
             this.state.orders.map(order => (
                 <View style={styles.card} key={order.id}>
@@ -89,3 +110,4 @@ const styles = StyleSheet.create({
     }
 
 })
+export default withNavigationFocus(CheckoutScreen)

@@ -46,7 +46,7 @@ export default class ContactDataScreen extends Component {
             .then(response => {
                 setTimeout(() => {
                     this.setState({ loading: false })
-                    this.props.navigation.navigate('Home')
+                    this.props.navigation.replace('Home')
                 }, 400)
             })
             .catch(error => {
