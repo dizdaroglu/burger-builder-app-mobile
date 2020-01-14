@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Logo from '../components/Logo/Logo';
 import axios from '../../axios-orders';
 import Spinner from '../components/Spinner/Spinner';
 import { withNavigationFocus } from 'react-navigation';
+import stylesFont from '../stylesFont';
 
 class CheckoutScreen extends Component {
 
@@ -12,6 +13,7 @@ class CheckoutScreen extends Component {
             backgroundColor: '#703b09',
         },
         headerRight: <Logo />
+
 
     }
     state = {
@@ -65,13 +67,19 @@ class CheckoutScreen extends Component {
                         {
                             Object.keys(order.ingredients).map((i) => (
                                 <View style={styles.ingredient} key={i}>
-                                    <Text style={{ fontWeight: 'bold' }}>{i} ({order.ingredients[i]})</Text>
+                                    <Text style={{
+                                        fontFamily: stylesFont.Bold,
+                                        color: '#703b09'
+                                    }}>{i} ({order.ingredients[i]})</Text>
                                 </View>
                             ))
                         }
                     </View>
                     <View style={styles.price}>
-                        <Text style={{ fontWeight: 'bold' }}> Price: ${order.price}</Text>
+                        <Text style={{
+                            fontFamily: stylesFont.Bold,
+                            color: '#cf8f2e'
+                        }}> Price: ${order.price}</Text>
                     </View>
                 </View>
             ))
@@ -81,7 +89,9 @@ class CheckoutScreen extends Component {
         }
         return (
             <View style={styles.container}>
-                {card}
+                <ScrollView>
+                    {card}
+                </ScrollView>
             </View>
         );
     }
@@ -93,7 +103,7 @@ const styles = StyleSheet.create({
     },
     card: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#cf8f2e',
         marginVertical: 20,
         marginHorizontal: 20,
         padding: 20

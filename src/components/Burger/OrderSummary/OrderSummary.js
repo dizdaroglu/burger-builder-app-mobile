@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import stylesFont from '../../../stylesFont';
 
 export default class OrderSummary extends Component {
 
@@ -10,7 +11,7 @@ export default class OrderSummary extends Component {
                 return (
                     <View key={igKey} style={{ flexDirection: 'row' }}>
                         <View style={{ width: 70 }} >
-                            <Text>{igKey.toUpperCase()} :</Text>
+                            <Text style={{ fontFamily: stylesFont.Regular }}>{igKey.toUpperCase()} :</Text>
                         </View>
                         <Text>{this.props.ingredient[igKey]}</Text>
                     </View>
@@ -22,7 +23,7 @@ export default class OrderSummary extends Component {
                     <Text style={styles.orderText}>You Order</Text>
                 </View>
                 <View style={styles.burger}>
-                    <Text> A delicious burger with the following ingredients </Text>
+                    <Text style={{ fontFamily: stylesFont.SemiBold }}> A delicious burger with the following ingredients </Text>
                 </View>
                 <View style={styles.ingredient}>
                     {
@@ -33,7 +34,7 @@ export default class OrderSummary extends Component {
                     <Text style={styles.priceText}>Total Price: ${this.props.price.toFixed(2)}</Text>
                 </View>
                 <View style={styles.checkout}>
-                    <Text>Continue to checkout?</Text>
+                    <Text style={{ fontFamily: stylesFont.Regular }}>Continue to checkout?</Text>
                 </View>
                 <View style={styles.button}>
                     <TouchableOpacity onPress={() => this.props.close()} style={styles.cancel}>
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     },
     orderText: {
         fontSize: 17,
-        fontWeight: 'bold'
+        fontFamily: stylesFont.ExtraBold
     },
     burger: {
         marginVertical: 20
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     priceText: {
-        fontWeight: 'bold'
+        fontFamily: stylesFont.Bold
     },
     checkout: {
         marginTop: 10,
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
         color: '#944317',
-        fontWeight: 'bold',
+        fontFamily: stylesFont.Bold,
         borderWidth: 1,
         borderColor: '#944317'
     },
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
         color: '#5c9210',
-        fontWeight: 'bold',
+        fontFamily: stylesFont.Bold,
         borderWidth: 1,
         borderColor: '#5c9210'
 

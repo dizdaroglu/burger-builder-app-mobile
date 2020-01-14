@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Animated, Image, Dimensions, Easing } from 'react-native';
+import stylesFont from '../stylesFont';
 
 export default class SplashScreen extends Component {
     static navigationOptions = {
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: 400,
         fontSize: 21,
-        color: '#323232'
+        color: '#323232',
+        fontFamily: stylesFont.Light
     }
 })

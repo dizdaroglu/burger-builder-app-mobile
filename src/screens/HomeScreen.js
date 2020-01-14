@@ -10,7 +10,6 @@ import axios from '../../axios-orders';
 import Spinner from '../components/Spinner/Spinner';
 import Au from '../components/UI/Au/Au';
 
-
 const INGREDIENT_PRICES = {
     salad: 0.5,
     cheese: 0.4,
@@ -31,6 +30,7 @@ class HomeScreen extends Component {
         ingredients: null,
         totalPrice: 0,
         purchasing: false,
+        purchasable: false,
         error: false,
         loading: false
 
@@ -45,6 +45,16 @@ class HomeScreen extends Component {
             })
     }
 
+    updatePurchaseState = (ingredients) => {
+        const sum = Object.keys(ingredients)
+            .map(igKey => {
+                return ingredients[igKey]
+            })
+            .reduce((sum, el) => {
+                return sum + el
+            }, 0)
+        this.setState({ purchasable: sum > 0 })
+    }
     addIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
         const updatedCount = oldCount + 1;
@@ -59,6 +69,7 @@ class HomeScreen extends Component {
             ingredients: updatedIngredients,
             totalPrice: newPrice
         })
+        this.updatePurchaseState(updatedIngredients)
     }
     removeIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
@@ -109,6 +120,7 @@ class HomeScreen extends Component {
                             price={this.state.totalPrice}
                             disabled={disabledInfo}
                             open={this.toggleModal}
+                            purchasable={this.state.purchasable}
                         />
                     </View>
                 </Au>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import stylesFont from '../../../../stylesFont';
 
 const buildControl = (props) => (
     <View style={styles.ingredient}>
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     ingredientText: {
         marginHorizontal: 10,
         color: 'black',
-        fontWeight: 'bold'
+        fontFamily: stylesFont.Bold
     },
     ingredientBtn: {
         flexDirection: 'row',
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     },
     btnText: {
         color: 'white',
+        fontFamily: stylesFont.Light
     }
 })
 

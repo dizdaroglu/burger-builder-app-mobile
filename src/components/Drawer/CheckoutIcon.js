@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 const checkoutIcon = (props) => (
     <View style={styles.container}>
         <Image
-            source={require('../../assets/checkout.png')}
+            source={require('../../assets/meal.png')}
             style={styles.checkout}
         />
     </View>

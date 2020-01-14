@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Logo from '../components/Logo/Logo';
 import Burger from '../components/Burger/Burger';
+import stylesFont from '../stylesFont';
 
 export default class CheckoutSummary extends Component {
 
     static navigationOptions = {
         headerStyle: {
             backgroundColor: '#703b09',
+
         },
-        headerRight: <Logo />
+        headerRight: <Logo />,
+        headerTintColor: 'white'
 
     }
     state = {
@@ -40,7 +43,7 @@ export default class CheckoutSummary extends Component {
                     <Burger ingredient={ingredients} />
                 </View>
                 <View style={styles.button}>
-                    <TouchableOpacity style={styles.cancel}>
+                    <TouchableOpacity style={styles.cancel} onPress={() => this.props.navigation.navigate('Home')}>
                         <Text style={styles.cancelBtn}>CANCEL</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.onContinueHandler()} style={styles.continue}>
@@ -61,6 +64,7 @@ const styles = StyleSheet.create({
     },
     upText: {
         fontSize: 24,
+        fontFamily: stylesFont.Regular
     },
     burger: {
         width: '100%',
@@ -73,17 +77,17 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
         color: '#944317',
-        fontWeight: 'bold',
         borderWidth: 1,
-        borderColor: '#944317'
+        borderColor: '#944317',
+        fontFamily: stylesFont.Bold
     },
     continueBtn: {
         padding: 10,
         margin: 10,
         color: '#5c9210',
-        fontWeight: 'bold',
         borderWidth: 1,
-        borderColor: '#5c9210'
+        borderColor: '#5c9210',
+        fontFamily: stylesFont.Bold
 
     }
 })

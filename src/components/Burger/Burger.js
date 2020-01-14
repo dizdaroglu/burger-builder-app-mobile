@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
+import stylesFont from '../../stylesFont';
 
 const burger = (props) => {
 
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: 10,
         color: 'black',
-        fontWeight: 'bold'
+        fontFamily: stylesFont.Bold
     }
 })
 export default burger;

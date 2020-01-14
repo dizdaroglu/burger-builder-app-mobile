@@ -8,7 +8,7 @@ class MyPicker extends Component {
     }
     render() {
         return (
-            <Picker style={styles.picker} selectedValue={this.state.item} onValueChange={this.update}>
+            <Picker style={styles.picker} selectedValue={this.props.value} onValueChange={this.props.onChange}>
                 <Picker.Item label="Fastest" value="fastest" />
                 <Picker.Item label="Cheapest" value="cheapest" />
             </Picker>

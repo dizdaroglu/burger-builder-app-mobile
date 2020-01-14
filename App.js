@@ -53,7 +53,13 @@ const HomeStack = createStackNavigator({
     screen: ContactDataScreen
   }
 }, {
-  initialRouteName: 'Splash'
+  initialRouteName: 'Home',
+  navigationOptions: {
+
+    headerTintColor: {
+      color: 'white'
+    }
+  }
 })
 const CheckoutStack = createStackNavigator({
   Check: {

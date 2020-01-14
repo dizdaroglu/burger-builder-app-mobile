@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import BuildControl from './BuildControl/BuildControl';
+import stylesFont from '../../../stylesFont';
 
 const controls = [
     { label: 'Salad', type: 'salad' },
@@ -12,7 +13,7 @@ const controls = [
 const buildControls = (props) => (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.currentPrice}>
-            <Text>Current Price: <Text style={{ fontWeight: 'bold' }}>${props.price.toFixed(2)}</Text></Text>
+            <Text style={{ fontFamily: stylesFont.SemiBold }}>Current Price: <Text style={{ fontWeight: 'bold' }}>${props.price.toFixed(2)}</Text></Text>
         </View>
         <View style={styles.middle}>
             {
@@ -29,7 +30,7 @@ const buildControls = (props) => (
             }
         </View>
         <View style={styles.order}>
-            <TouchableOpacity style={styles.orderButton} onPress={() => props.open()}>
+            <TouchableOpacity style={styles.orderButton} disabled={!props.purchasable} onPress={() => props.open()}>
                 <Text style={styles.orderButtonText}>ORDER NOW</Text>
             </TouchableOpacity>
         </View>
@@ -48,7 +49,9 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         color: '#966909',
-
+    },
+    orderButtonText: {
+        fontFamily: stylesFont.Bold,
     }
 })
 

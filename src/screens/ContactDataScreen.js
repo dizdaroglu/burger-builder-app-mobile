@@ -6,6 +6,7 @@ import Input from '../components/UI/Input/Input';
 import MyPicker from '../components/UI/MyPicker/MyPicker';
 import axios from '../../axios-orders';
 import Spinner from '../components/Spinner/Spinner';
+import stylesFont from '../stylesFont';
 
 export default class ContactDataScreen extends Component {
 
@@ -13,7 +14,8 @@ export default class ContactDataScreen extends Component {
         headerStyle: {
             backgroundColor: '#703b09',
         },
-        headerRight: <Logo />
+        headerRight: <Logo />,
+        headerTintColor: 'white'
 
     }
     state = {
@@ -23,12 +25,21 @@ export default class ContactDataScreen extends Component {
             zipCode: '',
             country: '',
             email: '',
-            //  deliveryMethod: '',
+            deliveryMethod: '',
         },
-        loading: false
+        loading: false,
     }
 
     orderHandler = () => {
+        if (this.state.orderForm.name === '' ||
+            this.state.orderForm.street === '' ||
+            this.state.orderForm.zipCode === '' ||
+            this.state.orderForm.country === '' ||
+            this.state.orderForm.email === '') {
+            alert("Please don't empty!")
+            return;
+        }
+
         this.setState({ loading: true })
         const formData = {};
         for (let formElement in this.state.orderForm) {
@@ -39,7 +50,7 @@ export default class ContactDataScreen extends Component {
         const ingredients = params ? params.ingredient : null;
         const order = {
             ingredients: ingredients.ingredients,
-            price: ingredients.totalPrice,
+            price: ingredients.totalPrice.toFixed(2),
             orderData: formData
         }
         axios.post('/orders.json', order)
@@ -54,6 +65,7 @@ export default class ContactDataScreen extends Component {
                 console.log(error)
             })
     }
+
     render() {
         const { params } = this.props.navigation.state;
         const ingredients = params ? params.ingredient.ingredients : null;
@@ -88,10 +100,13 @@ export default class ContactDataScreen extends Component {
                     value={this.state.orderForm.email}
                     onChange={(email) => this.setState({ orderForm: { ...this.state.orderForm, email } })}
                 />
-                <MyPicker />
+                <MyPicker
+                    value={this.state.orderForm.deliveryMethod}
+                    onChange={(deliveryMethod) => this.setState({ orderForm: { ...this.state.orderForm, deliveryMethod } })}
+                />
                 <View style={styles.orderButton}>
                     <TouchableOpacity style={styles.button} onPress={() => this.orderHandler()}>
-                        <Text style={styles.buttonText}>Order</Text>
+                        <Text style={styles.buttonText}>ORDER</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -128,7 +143,7 @@ const styles = StyleSheet.create({
         marginVertical: 15
     },
     text: {
-        fontWeight: 'bold',
+        fontFamily: stylesFont.Bold,
         fontSize: 16
     },
     orderButton: {
@@ -142,7 +157,7 @@ const styles = StyleSheet.create({
     buttonText: {
         paddingVertical: 10,
         paddingHorizontal: 30,
-        fontWeight: 'bold',
+        fontFamily: stylesFont.Bold,
         color: '#cf8f2e'
     }
 })
