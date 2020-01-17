@@ -6,6 +6,9 @@ import Spinner from '../components/Spinner/Spinner';
 import { withNavigationFocus } from 'react-navigation';
 import stylesFont from '../stylesFont';
 
+import { connect } from 'react-redux';
+import * as actions from '../store/actions/index';
+
 class CheckoutScreen extends Component {
 
     static navigationOptions = {
@@ -16,52 +19,21 @@ class CheckoutScreen extends Component {
 
 
     }
-    state = {
-        orders: [],
-        loading: true
-    }
+
 
     componentDidUpdate(prevProps) {
         if (prevProps.isFocused !== this.props.isFocused) {
-            axios.get('orders.json')
-                .then(response => {
-                    const fetchedOrders = [];
-                    for (let key in response.data) {
-                        fetchedOrders.push({
-                            ...response.data[key],
-                            id: key
-                        })
-                    }
-                    this.setState({ loading: false, orders: fetchedOrders })
-                })
-                .catch(error => {
-                    console.log('error');
-                    this.setState({ loading: false })
-                })
+            this.props.onFetchOrders();
         }
     }
 
     componentDidMount() {
-        axios.get('orders.json')
-            .then(response => {
-                const fetchedOrders = [];
-                for (let key in response.data) {
-                    fetchedOrders.push({
-                        ...response.data[key],
-                        id: key
-                    })
-                }
-                this.setState({ loading: false, orders: fetchedOrders })
-            })
-            .catch(error => {
-                console.log('error');
-                this.setState({ loading: false })
-            })
+        this.props.onFetchOrders();
     }
 
     render() {
         let card = (
-            this.state.orders.map(order => (
+            this.props.orders.map(order => (
                 <View style={styles.card} key={order.id}>
                     <View style={styles.ingredients}>
                         {
@@ -84,7 +56,7 @@ class CheckoutScreen extends Component {
                 </View>
             ))
         )
-        if (this.state.loading) {
+        if (this.props.loading) {
             card = <Spinner />
         }
         return (
@@ -120,4 +92,15 @@ const styles = StyleSheet.create({
     }
 
 })
-export default withNavigationFocus(CheckoutScreen)
+const mapStateToProps = state => {
+    return {
+        orders: state.order.orders,
+        loading: state.order.loading
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        onFetchOrders: () => dispatch(actions.fetchOrders())
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigationFocus(CheckoutScreen))

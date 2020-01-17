@@ -26,9 +26,6 @@ class HomeScreen extends Component {
 
     state = {
         purchasing: false,
-        purchasable: false,
-        loading: false
-
     }
     componentDidMount() {
         this.props.onInitIngredients()
@@ -53,6 +50,7 @@ class HomeScreen extends Component {
     }
     continueHandler = () => {
         this.toggleModal();
+        this.props.onInitPurchase();
         this.props.navigation.navigate('Summary', { ingredient: this.props })
     }
 
@@ -122,7 +120,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
         onIngredientRemoved: (ingName) => dispatch(actions.removeIngredient(ingName)),
-        onInitIngredients: () => dispatch(actions.initIngredient())
+        onInitIngredients: () => dispatch(actions.initIngredient()),
+        onInitPurchase: () => dispatch(actions.purchaseInit())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

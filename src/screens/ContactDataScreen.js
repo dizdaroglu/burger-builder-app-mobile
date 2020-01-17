@@ -8,7 +8,10 @@ import axios from '../../axios-orders';
 import Spinner from '../components/Spinner/Spinner';
 import stylesFont from '../stylesFont';
 
-export default class ContactDataScreen extends Component {
+import { connect } from 'react-redux';
+import * as actions from '../store/actions/index';
+
+class ContactDataScreen extends Component {
 
     static navigationOptions = {
         headerStyle: {
@@ -27,7 +30,6 @@ export default class ContactDataScreen extends Component {
             email: '',
             deliveryMethod: '',
         },
-        loading: false,
     }
 
     orderHandler = () => {
@@ -39,8 +41,6 @@ export default class ContactDataScreen extends Component {
             alert("Please don't empty!")
             return;
         }
-
-        this.setState({ loading: true })
         const formData = {};
         for (let formElement in this.state.orderForm) {
             formData[formElement] = this.state.orderForm[formElement]
@@ -53,17 +53,8 @@ export default class ContactDataScreen extends Component {
             price: ingredients.price.toFixed(2),
             orderData: formData
         }
-        axios.post('/orders.json', order)
-            .then(response => {
-                setTimeout(() => {
-                    this.setState({ loading: false })
-                    this.props.navigation.replace('Home')
-                }, 400)
-            })
-            .catch(error => {
-                this.setState({ loading: false })
-                console.log(error)
-            })
+        const { replace } = this.props.navigation;
+        this.props.onOrderBurger(order, replace);
     }
 
     render() {
@@ -111,7 +102,7 @@ export default class ContactDataScreen extends Component {
                 </View>
             </View>
         )
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Spinner />
         }
         return (
@@ -161,3 +152,17 @@ const styles = StyleSheet.create({
         color: '#cf8f2e'
     }
 })
+
+const mapStateToProps = state => {
+    return {
+        ings: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderBurger: (orderData, replace) => dispatch(actions.purchaseBurger(orderData, replace))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ContactDataScreen)

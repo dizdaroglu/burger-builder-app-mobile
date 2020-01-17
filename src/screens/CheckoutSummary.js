@@ -15,14 +15,6 @@ export default class CheckoutSummary extends Component {
         headerTintColor: 'white'
 
     }
-    state = {
-        ingredients: {
-            salad: 1,
-            tomato: 1,
-            cheese: 1,
-            meat: 1
-        },
-    }
     onContinueHandler = () => {
         const { params } = this.props.navigation.state;
         const ingredients = params ? params.ingredient : null;
