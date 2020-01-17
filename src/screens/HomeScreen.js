@@ -10,12 +10,10 @@ import axios from '../../axios-orders';
 import Spinner from '../components/Spinner/Spinner';
 import Au from '../components/UI/Au/Au';
 
-const INGREDIENT_PRICES = {
-    salad: 0.5,
-    cheese: 0.4,
-    meat: 1.3,
-    tomato: 0.7
-}
+//redux
+import { connect } from 'react-redux';
+import * as actions from '../store/actions/index';
+
 
 class HomeScreen extends Component {
 
@@ -27,22 +25,13 @@ class HomeScreen extends Component {
     }
 
     state = {
-        ingredients: null,
-        totalPrice: 0,
         purchasing: false,
         purchasable: false,
-        error: false,
         loading: false
 
     }
     componentDidMount() {
-        axios.get('https://react-my-burger-mobile.firebaseio.com/ingredients.json')
-            .then(response => {
-                this.setState({ ingredients: response.data })
-            })
-            .catch(error => {
-                this.setState({ error: true })
-            })
+        this.props.onInitIngredients()
     }
 
     updatePurchaseState = (ingredients) => {
@@ -53,42 +42,10 @@ class HomeScreen extends Component {
             .reduce((sum, el) => {
                 return sum + el
             }, 0)
-        this.setState({ purchasable: sum > 0 })
+        return sum > 0;
     }
-    addIngredientHandler = (type) => {
-        const oldCount = this.state.ingredients[type];
-        const updatedCount = oldCount + 1;
-        const updatedIngredients = {
-            ...this.state.ingredients
-        }
-        updatedIngredients[type] = updatedCount;
-        const priceAddition = INGREDIENT_PRICES[type];
-        const oldPrice = this.state.totalPrice;
-        const newPrice = oldPrice + priceAddition;
-        this.setState({
-            ingredients: updatedIngredients,
-            totalPrice: newPrice
-        })
-        this.updatePurchaseState(updatedIngredients)
-    }
-    removeIngredientHandler = (type) => {
-        const oldCount = this.state.ingredients[type];
-        if (oldCount <= 0) {
-            return;
-        }
-        const updatedCount = oldCount - 1;
-        const updatedIngredients = {
-            ...this.state.ingredients
-        }
-        updatedIngredients[type] = updatedCount;
-        const priceRemovetion = INGREDIENT_PRICES[type];
-        const oldPrice = this.state.totalPrice;
-        const newPrice = oldPrice - priceRemovetion;
-        this.setState({
-            ingredients: updatedIngredients,
-            totalPrice: newPrice
-        })
-    }
+
+
     toggleModal = () => {
         this.setState({
             purchasing: !this.state.purchasing
@@ -96,31 +53,31 @@ class HomeScreen extends Component {
     }
     continueHandler = () => {
         this.toggleModal();
-        this.props.navigation.navigate('Summary', { ingredient: this.state })
+        this.props.navigation.navigate('Summary', { ingredient: this.props })
     }
 
     render() {
         const disabledInfo = {
-            ...this.state.ingredients
+            ...this.props.ings
         };
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0
         }
-        let burger = this.state.error ? <Text>hata</Text> : <Spinner />;
-        if (this.state.ingredients) {
+        let burger = this.props.error ? <Text>hata</Text> : <Spinner />;
+        if (this.props.ings) {
             burger = (
                 <Au>
                     <View style={styles.up}>
-                        <Burger ingredient={this.state.ingredients} />
+                        <Burger ingredient={this.props.ings} />
                     </View>
                     <View style={styles.down}>
                         <BuildControls
-                            ingredientAdded={this.addIngredientHandler}
-                            ingredientRemoved={this.removeIngredientHandler}
-                            price={this.state.totalPrice}
+                            ingredientAdded={this.props.onIngredientAdded}
+                            ingredientRemoved={this.props.onIngredientRemoved}
+                            price={this.props.price}
                             disabled={disabledInfo}
                             open={this.toggleModal}
-                            purchasable={this.state.purchasable}
+                            purchasable={this.updatePurchaseState(this.props.ings)}
                         />
                     </View>
                 </Au>
@@ -133,8 +90,8 @@ class HomeScreen extends Component {
                     <OrderSummary
                         continue={this.continueHandler}
                         close={this.toggleModal}
-                        price={this.state.totalPrice}
-                        ingredient={this.state.ingredients}
+                        price={this.props.price}
+                        ingredient={this.props.ings}
                     />
                 </MyModal>
                 {burger}
@@ -154,4 +111,18 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 })
-export default HomeScreen
+const mapStateToProps = state => {
+    return {
+        ings: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
+        onIngredientRemoved: (ingName) => dispatch(actions.removeIngredient(ingName)),
+        onInitIngredients: () => dispatch(actions.initIngredient())
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

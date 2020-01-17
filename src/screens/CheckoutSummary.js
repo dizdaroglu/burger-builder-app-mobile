@@ -32,7 +32,7 @@ export default class CheckoutSummary extends Component {
     }
     render() {
         const { params } = this.props.navigation.state;
-        const ingredients = params ? params.ingredient.ingredients : null;
+        const ingredients = params ? params.ingredient.ings : null;
         // console.log(ingredients)
         return (
             <View style={styles.container}>

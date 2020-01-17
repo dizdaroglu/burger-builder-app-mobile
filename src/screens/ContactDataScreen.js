@@ -49,8 +49,8 @@ export default class ContactDataScreen extends Component {
         const { params } = this.props.navigation.state;
         const ingredients = params ? params.ingredient : null;
         const order = {
-            ingredients: ingredients.ingredients,
-            price: ingredients.totalPrice.toFixed(2),
+            ingredients: ingredients.ings,
+            price: ingredients.price.toFixed(2),
             orderData: formData
         }
         axios.post('/orders.json', order)
@@ -68,7 +68,7 @@ export default class ContactDataScreen extends Component {
 
     render() {
         const { params } = this.props.navigation.state;
-        const ingredients = params ? params.ingredient.ingredients : null;
+        const ingredients = params ? params.ingredient.ings : null;
 
         let form = (
             <View style={styles.form}>
