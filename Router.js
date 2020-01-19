@@ -6,6 +6,7 @@ import CheckoutSummary from './src/screens/CheckoutSummary';
 import ContactDataScreen from './src/screens/ContactDataScreen';
 import CheckoutScreen from './src/screens/CheckoutScreen';
 import SplashScreen from './src/screens/SplashScreen';
+import AuthScreen from './src/screens/AuthScreen';
 import CustomDrawer from './src/components/Drawer/CustomDrawer';
 import HomeIcon from './src/components/Drawer/HomeIcon';
 import CheckoutIcon from './src/components/Drawer/CheckoutIcon';
@@ -61,6 +62,14 @@ const HomeStack = createStackNavigator({
         }
     }
 })
+const AuthStack = createStackNavigator({
+    Authenticate: {
+        screen: AuthScreen,
+        navigationOptions: ({ navigation }) => ({
+            headerLeft: <CustomDrawer navigation={navigation} />
+        })
+    }
+})
 const CheckoutStack = createStackNavigator({
     Check: {
         screen: CheckoutScreen,
@@ -89,6 +98,9 @@ const Drawer = createDrawerNavigator({
                 <CheckoutIcon />
             )
         }
+    },
+    Auth: {
+        screen: AuthStack
     }
 }, {
     drawerWidth: 260,
