@@ -6,22 +6,18 @@ import * as actions from '../store/actions/index';
 import Spinner from '../components/Spinner/Spinner';
 
 class LogoutScreen extends Component {
+    static navigationOptions = {
+        header: null
+    }
 
     componentDidMount() {
-        this.props.onLogout();
+        const { replace } = this.props.navigation;
+        this.props.onLogout(replace);
     }
 
     render() {
-
-        if (this.props.isAuthenticated) {
-            <Spinner />
-        } else {
-            this.props.navigation.navigate('Auth', { email: '', password: '' })
-        }
         return (
-            <View>
-                <Text> LogoutScreen </Text>
-            </View>
+            <Spinner />
         );
     }
 }
@@ -33,7 +29,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLogout: () => dispatch(actions.logout())
+        onLogout: (replace) => dispatch(actions.onLogout(replace))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LogoutScreen)

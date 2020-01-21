@@ -3,7 +3,6 @@ import * as actionTypes from './actionTypes';
 import { key } from '../../key';
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 export const authStart = () => {
     return {
         type: actionTypes.AUTH_START
@@ -30,12 +29,19 @@ export const setAuthRedirectPath = (path) => {
 }
 
 export const logout = () => {
-    console.log('logout')
     AsyncStorage.removeItem('token');
     AsyncStorage.removeItem('expirationDate');
     AsyncStorage.removeItem('userId');
     return {
         type: actionTypes.AUTH_LOGOUT
+    }
+}
+export const onLogout = (replace) => {
+    return dispatch => {
+        dispatch(logout())
+        setTimeout(() => {
+            replace('Auth')
+        }, 1000)
     }
 }
 export const checkAuthTimeout = (expirationTime) => {

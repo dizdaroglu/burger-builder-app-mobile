@@ -146,8 +146,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     buttonSuccess: {
-        color: '#5c9210',
-        borderColor: '#5c9210',
+        color: '#944317',
+        borderColor: '#944317',
         borderWidth: 1,
         paddingHorizontal: 20,
         borderRadius: 5,
@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     buttonDanger: {
-        color: '#944317',
         fontSize: 12
 
     }

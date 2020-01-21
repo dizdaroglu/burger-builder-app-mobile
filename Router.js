@@ -85,7 +85,10 @@ const LogoutStack = createStackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerLeft: <CustomDrawer navigation={navigation} />
         })
-    }
+    },
+    Auth: {
+        screen: AuthScreen
+    },
 })
 const Drawer = createDrawerNavigator({
     Home: {
