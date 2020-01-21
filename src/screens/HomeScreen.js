@@ -9,11 +9,12 @@ import OrderSummary from '../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import Spinner from '../components/Spinner/Spinner';
 import Au from '../components/UI/Au/Au';
-
+import { YellowBox } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/index';
 
+console.disableYellowBox = true;
 
 class HomeScreen extends Component {
 
@@ -55,6 +56,7 @@ class HomeScreen extends Component {
     }
 
     render() {
+        console.log('token2', this.props.token)
         const disabledInfo = {
             ...this.props.ings
         };
@@ -113,7 +115,8 @@ const mapStateToProps = state => {
     return {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        error: state.burgerBuilder.error
+        error: state.burgerBuilder.error,
+        token: state.auth.token
     }
 }
 const mapDispatchToProps = dispatch => {

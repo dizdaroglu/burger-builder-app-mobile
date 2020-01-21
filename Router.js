@@ -7,8 +7,11 @@ import ContactDataScreen from './src/screens/ContactDataScreen';
 import CheckoutScreen from './src/screens/CheckoutScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import AuthScreen from './src/screens/AuthScreen';
+import LogoutScreen from './src/screens/LogoutScreen';
+
 import CustomDrawer from './src/components/Drawer/CustomDrawer';
 import HomeIcon from './src/components/Drawer/HomeIcon';
+import LogoutIcon from './src/components/Drawer/LogoutIcon';
 import CheckoutIcon from './src/components/Drawer/CheckoutIcon';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -52,22 +55,18 @@ const HomeStack = createStackNavigator({
     },
     Contact: {
         screen: ContactDataScreen
-    }
+    },
+    Auth: {
+        screen: AuthScreen
+    },
+
 }, {
-    initialRouteName: 'Home',
+    initialRouteName: 'Splash',
     navigationOptions: {
 
         headerTintColor: {
             color: 'white'
         }
-    }
-})
-const AuthStack = createStackNavigator({
-    Authenticate: {
-        screen: AuthScreen,
-        navigationOptions: ({ navigation }) => ({
-            headerLeft: <CustomDrawer navigation={navigation} />
-        })
     }
 })
 const CheckoutStack = createStackNavigator({
@@ -79,7 +78,15 @@ const CheckoutStack = createStackNavigator({
         })
     }
 })
+const LogoutStack = createStackNavigator({
+    Logout: {
+        screen: LogoutScreen,
 
+        navigationOptions: ({ navigation }) => ({
+            headerLeft: <CustomDrawer navigation={navigation} />
+        })
+    }
+})
 const Drawer = createDrawerNavigator({
     Home: {
         screen: HomeStack,
@@ -97,11 +104,18 @@ const Drawer = createDrawerNavigator({
             drawerIcon: () => (
                 <CheckoutIcon />
             )
-        }
+        },
     },
-    Auth: {
-        screen: AuthStack
+    Log: {
+        screen: LogoutStack,
+        navigationOptions: {
+            drawerLabel: 'Logout',
+            drawerIcon: () => (
+                <LogoutIcon />
+            )
+        },
     }
+
 }, {
     drawerWidth: 260,
     contentComponent: CustomDrawerComponent,

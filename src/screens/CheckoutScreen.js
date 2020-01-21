@@ -23,12 +23,12 @@ class CheckoutScreen extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.isFocused !== this.props.isFocused) {
-            this.props.onFetchOrders();
+            this.props.onFetchOrders(this.props.token, this.props.userId);
         }
     }
 
     componentDidMount() {
-        this.props.onFetchOrders();
+        this.props.onFetchOrders(this.props.token, this.props.userId);
     }
 
     render() {
@@ -95,12 +95,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         orders: state.order.orders,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: () => dispatch(actions.fetchOrders())
+        onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigationFocus(CheckoutScreen))

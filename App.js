@@ -5,17 +5,19 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import burgerBuilderReducer from './src/store/reducers/burgerBuilder';
 import orderReducer from './src/store/reducers/order';
+import authReducer from './src/store/reducers/auth';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
   burgerBuilder: burgerBuilderReducer,
-  order: orderReducer
+  order: orderReducer,
+  auth: authReducer
 })
-const store = createStore(rootReducer,
-  applyMiddleware(thunk)
-);
 
-export default class App extends Component {
+const store = createStore(rootReducer, applyMiddleware(thunk),
+);
+class App extends Component {
+
 
   render() {
     return (
@@ -27,4 +29,4 @@ export default class App extends Component {
     );
   }
 }
-
+export default App

@@ -51,10 +51,11 @@ class ContactDataScreen extends Component {
         const order = {
             ingredients: ingredients.ings,
             price: ingredients.price.toFixed(2),
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId
         }
         const { replace } = this.props.navigation;
-        this.props.onOrderBurger(order, replace);
+        this.props.onOrderBurger(order, replace, this.props.token);
     }
 
     render() {
@@ -157,12 +158,14 @@ const mapStateToProps = state => {
     return {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (orderData, replace) => dispatch(actions.purchaseBurger(orderData, replace))
+        onOrderBurger: (orderData, replace, token) => dispatch(actions.purchaseBurger(orderData, replace, token))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ContactDataScreen)

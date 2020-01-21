@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Animated, Image, Dimensions, Easing } from 'react-native';
 import stylesFont from '../stylesFont';
 
-export default class SplashScreen extends Component {
+import { connect } from 'react-redux';
+import * as actions from '../store/actions/index'
+
+class SplashScreen extends Component {
     static navigationOptions = {
         header: null
     }
@@ -22,13 +25,12 @@ export default class SplashScreen extends Component {
                 duration: 1000,
             })
         ]).start(() => {
-            this.props.navigation.navigate('Home')
+            this.props.navigation.navigate('Auth')
         })
     }
 
 
     render() {
-
         return (
             <View style={styles.container}>
                 <StatusBar hidden />
@@ -62,3 +64,5 @@ const styles = StyleSheet.create({
         fontFamily: stylesFont.Light
     }
 })
+
+export default SplashScreen
