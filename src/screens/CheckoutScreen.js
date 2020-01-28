@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
 import Logo from '../components/Logo/Logo';
 import axios from '../../axios-orders';
 import Spinner from '../components/Spinner/Spinner';
 import { withNavigationFocus } from 'react-navigation';
 import stylesFont from '../stylesFont';
+import { setTokens, getTokens } from '../key';
+import { autoSignIn } from '../store/actions/auth';
 
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/index';
@@ -23,6 +25,12 @@ class CheckoutScreen extends Component {
         loading: true,
         isAuth: true
     }
+    manageState(loading, isAuth) {
+        this.setState({
+            loading,
+            isAuth
+        })
+    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.isFocused !== this.props.isFocused) {
@@ -31,7 +39,9 @@ class CheckoutScreen extends Component {
     }
 
     componentDidMount() {
+
         this.props.onFetchOrders(this.props.token, this.props.userId);
+
     }
 
     render() {
@@ -65,7 +75,9 @@ class CheckoutScreen extends Component {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    {card}
+                    {
+                        card
+                    }
                 </ScrollView>
             </View>
         );
@@ -92,13 +104,12 @@ const styles = StyleSheet.create({
         padding: 5,
         marginRight: 5,
         marginBottom: 5
-    }
+    },
 
 })
 const mapStateToProps = state => {
-    console.log("token", state.auth)
-
     return {
+        Auth: state.auth,
         orders: state.order.orders,
         loading: state.order.loading,
         token: state.auth.auth.token,

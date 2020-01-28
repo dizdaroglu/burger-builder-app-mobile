@@ -163,11 +163,6 @@ class AuthForm extends Component {
                             <Text style={styles.buttonText}>{this.state.actionMode}</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.button}>
-                        <TouchableOpacity onPress={() => this.props.goNext()}>
-                            <Text style={styles.buttonText}>I'll do it later</Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
             </View>
         );

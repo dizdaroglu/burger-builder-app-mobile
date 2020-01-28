@@ -10,28 +10,14 @@ class LogoutScreen extends Component {
         header: null
     }
 
-    componentDidMount() {
-        const { replace } = this.props.navigation;
-        this.props.onLogout(replace);
-    }
-
 
     render() {
 
         return (
-            <Spinner />
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Logout</Text>
+            </View>
         );
     }
 }
-const mapStateToProps = state => {
-    return {
-        isAuthenticated: state.auth.token !== null
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onLogout: (replace) => dispatch(actions.onLogout(replace))
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(LogoutScreen)
+export default LogoutScreen
