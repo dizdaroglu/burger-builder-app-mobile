@@ -15,7 +15,9 @@ class LogoutScreen extends Component {
         this.props.onLogout(replace);
     }
 
+
     render() {
+
         return (
             <Spinner />
         );

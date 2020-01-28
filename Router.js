@@ -61,7 +61,7 @@ const HomeStack = createStackNavigator({
     },
 
 }, {
-    initialRouteName: 'Splash',
+    initialRouteName: 'Auth',
     navigationOptions: {
 
         headerTintColor: {

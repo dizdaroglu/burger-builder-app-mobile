@@ -19,7 +19,10 @@ class CheckoutScreen extends Component {
 
 
     }
-
+    state = {
+        loading: true,
+        isAuth: true
+    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.isFocused !== this.props.isFocused) {
@@ -93,11 +96,13 @@ const styles = StyleSheet.create({
 
 })
 const mapStateToProps = state => {
+    console.log("token", state.auth)
+
     return {
         orders: state.order.orders,
         loading: state.order.loading,
-        token: state.auth.token,
-        userId: state.auth.userId
+        token: state.auth.auth.token,
+        userId: state.auth.auth.uid
     }
 }
 const mapDispatchToProps = dispatch => {

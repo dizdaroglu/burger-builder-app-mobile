@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ActivityIndicator, ScrollView, TouchableOpacity, Image } from 'react-native';
 import Logo from '../components/Logo/Logo';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/index';
 import Spinner from '../components/Spinner/Spinner';
+import AuthForm from '../components/auth/authForm';
+import { setTokens, getTokens } from '../key';
+import { autoSignIn } from '../store/actions/auth';
+import { bindActionCreators } from 'redux';
 
 class AuthScreen extends Component {
 
@@ -13,91 +17,48 @@ class AuthScreen extends Component {
     state = {
         email: '',
         password: '',
-        isSignup: true
+        isSignup: true,
+        loading: true
     }
-
-    switchAuthModeHandler = () => {
-        this.setState(prevState => {
-            return { isSignup: !prevState.isSignup }
-        })
-    }
-    submitHandler = () => {
-        this.props.onAuth(
-            this.state.email,
-            this.state.password,
-            this.state.isSignup
-        )
-        this.setState({
-            email: '',
-            password: ''
-        })
+    goNext = () => {
+        this.props.navigation.navigate('Home')
     }
     componentDidMount() {
-        if (!this.props.burgerBuilder && this.props.authRedirectPath !== 'Home') {
-            this.props.onSetAuthRedirectPath()
-        }
-
+        console.log("authScreen2")
+        getTokens((value) => {
+            if (value[0][1] === null) {
+                this.setState({ loading: false })
+            } else {
+                this.props.autoSignIn(value[1][1]).then(() => {
+                    if (!this.props.Auth.auth.token) {
+                        this.setState({ loading: false })
+                    } else {
+                        setTokens(this.props.Auth.auth, () => {
+                            this.goNext();
+                        })
+                    }
+                })
+            }
+        })
     }
     render() {
-        console.log('heyyyooo1')
-
-        let form = (
-            <View style={styles.container}>
-                <View style={styles.textInput}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        value={this.state.email}
-                        placeholderTextColor="white"
-                        onChangeText={(email) => this.setState({ email })}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Password"
-                        placeholderTextColor="white"
-                        secureTextEntry
-                        value={this.state.password}
-                        onChangeText={(password) => this.setState({ password })}
-                    />
+        if (this.state.loading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator color="#cf8f2e" />
                 </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => this.submitHandler()}>
-                        <Text style={styles.buttonSuccess}>SUBMIT</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => this.switchAuthModeHandler()}>
-                        <Text style={styles.buttonDanger}>SWITCH TO {this.state.isSignup ? "SIGNIN" : "SIGNUP"}</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-        if (this.props.loading) {
-            form = <Spinner bg="#703b09" />
-
-        }
-        let errorMessage = null;
-        if (this.props.error) {
-            errorMessage = (
-                <Text>{this.props.error.message}</Text>
             )
         }
-
-        if (this.props.isAuthenticated) {
-            this.props.navigation.navigate(this.props.authRedirectPath)
-        }
         return (
-            <View style={styles.authContainer}>
-                <Image
-                    source={require('../assets/burger2.png')}
-                    style={styles.img}
-                />
-                <View style={styles.login}>
-                    <Text style={styles.text}>{this.state.isSignup ? "SIGNUP" : "SIGNIN"}</Text>
+            <ScrollView style={styles.authContainer}>
+                <View style={{ alignItems: 'center', }}>
+                    <Image
+                        source={require('../assets/burger2.png')}
+                        style={styles.img}
+                    />
+                    <AuthForm goNext={this.goNext} />
                 </View>
-                {errorMessage}
-
-                {form}
-
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -106,74 +67,23 @@ const styles = StyleSheet.create({
     authContainer: {
         flex: 0.7,
         backgroundColor: '#cf8f2e',
-        alignItems: 'center',
-        paddingTop: 90,
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 270,
-
+        padding: 50,
     },
     img: {
         width: 60,
-        height: 60
+        height: 60,
+        marginVertical: 20,
     },
-    login: {
-        marginBottom: 50,
-
-    },
-    text: {
-        fontSize: 24,
-        fontWeight: 'bold'
-    },
-    container: {
-
-        padding: 10,
-        width: '90%',
-        elevation: 1,
-    },
-    textInput: {
-        marginTop: 10
-    },
-    input: {
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        marginBottom: 10,
-        paddingLeft: 15,
-        opacity: 0.4,
-        color: 'white'
-    },
-    buttonContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 20,
-    },
-    buttonSuccess: {
-        color: '#944317',
-        borderColor: '#944317',
-        borderWidth: 1,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        paddingVertical: 10,
-        marginBottom: 15
-    },
-    buttonDanger: {
-        fontSize: 12
-
-    }
 })
 
 const mapStateToProps = state => {
     return {
-        loading: state.auth.loading,
-        error: state.auth.error,
-        authRedirectPath: state.auth.authRedirectPath,
-        isAuthenticated: state.auth.token,
-        buildingBurger: state.burgerBuilder.building,
-
+        Auth: state.auth,
     }
 }
 const mapDispatchToProps = dispatch => {
-    return {
-        onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup)),
-        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('Home'))
-    }
+    return bindActionCreators({ autoSignIn }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen)

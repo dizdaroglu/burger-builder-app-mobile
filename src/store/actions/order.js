@@ -63,6 +63,9 @@ export const fetchOrdersFail = (error) => {
 };
 
 export const fetchOrders = (token, userId) => {
+    console.log(token)
+    console.log(userId)
+
     return dispatch => {
         dispatch(fetchOrdersStart());
         const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
